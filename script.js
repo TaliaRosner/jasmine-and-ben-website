@@ -18,23 +18,53 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 // Mad Libs Generator (7 inputs, 4-line story)
+const shareBtn = document.getElementById("shareBtn");
+const copyBtn = document.getElementById("copyBtn");
+
 document.getElementById("madLibsForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const form = e.target;
-  const noun1 = form.noun1.value;
-  const verb1 = form.verb1.value;
-  const location = form.location.value;
-  const adjective = form.adjective.value;
-  const noun2 = form.noun2.value;
-  const animal = form.animal.value;
-  const exclamation = form.exclamation.value;
 
   const story = `
-    Jasmine was a mysterious ${noun1} with a passion for ${verb1}.
-    One day, at ${location}, she met Ben — a ${adjective} ${noun2} chasing a runaway ${animal}.
-    They locked eyes and yelled "${exclamation}!" at the same time.
+    Jasmine was a ${form.noun1.value} with a passion for ${form.verb1.value}. One day, at ${form.location.value}, 
+    she met Ben — a ${form.adjective.value} ${form.noun2.value} chasing a ${form.animal.value}. 
+    They locked eyes and yelled "${form.exclamation.value}!" at the same time. 
     The rest, as they say, is chaotic romantic history.
   `;
 
   document.getElementById("storyResult").textContent = story.trim();
+
+  // Show buttons
+  shareBtn.style.display = "inline-block";
+  copyBtn.style.display = "inline-block";
+});
+
+shareBtn.addEventListener("click", async () => {
+  const story = document.getElementById("storyResult").textContent;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "How Jasmine & Ben Met",
+        text: story,
+        url: window.location.href,
+      });
+    } catch (err) {
+      console.log("Share cancelled or failed.");
+    }
+  } else {
+    alert("Sharing not supported. Try 'Copy to Clipboard' instead!");
+  }
+});
+
+copyBtn.addEventListener("click", async () => {
+  const story = document.getElementById("storyResult").textContent;
+
+  try {
+    await navigator.clipboard.writeText(story);
+    copyBtn.textContent = "✅ Copied!";
+    setTimeout(() => (copyBtn.textContent = "📋 Copy to Clipboard"), 2000);
+  } catch (err) {
+    alert("Failed to copy.");
+  }
 });
