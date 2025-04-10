@@ -17,6 +17,14 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 // Mad Libs Generator (7 inputs, 4-line story)
 const shareBtn = document.getElementById("shareBtn");
 const copyBtn = document.getElementById("copyBtn");
@@ -26,13 +34,16 @@ document.getElementById("madLibsForm").addEventListener("submit", function (e) {
   const form = e.target;
 
   const story = `
-    Jasmine was a ${form.noun1.value} with a passion for ${form.verb1.value}. One day, at ${form.location.value}, 
-    she met Ben — a ${form.adjective.value} ${form.noun2.value} chasing a ${form.animal.value}. 
-    They locked eyes and yelled "${form.exclamation.value}!" at the same time. 
-    The rest, as they say, is chaotic romantic history.
-  `;
+  Jasmine was a ${form.noun1.value.toLowerCase()} with a passion for ${form.verb1.value.toLowerCase()}. 
+  One day, at ${toTitleCase(
+    form.location.value
+  )}, she met Ben — a ${form.adjective.value.toLowerCase()} 
+  ${form.noun2.value.toLowerCase()} chasing a ${form.animal.value.toLowerCase()}. 
+  They locked eyes and yelled "${form.exclamation.value.toUpperCase()}!" at the same time. 
+  The rest, as they say, is chaotic romantic history.
+`;
 
-  document.getElementById("storyResult").textContent = story.trim();
+  document.getElementById("storyResult").innerHTML = story.trim();
 
   // Show buttons
   shareBtn.style.display = "inline-block";

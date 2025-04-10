@@ -191,6 +191,7 @@ html {
 .story-box:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  
 }
 .share-button {
   margin-top: 1.5rem;
@@ -227,7 +228,6 @@ html {
 .copy-button:hover {
   background: var(--accent);
 }
-
 
 footer {
   text-align: center;
